@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gráficos do Papel Semente</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f9f9;
+      margin: 2rem;
+      color: #222;
+      text-align: center;
+    }
+    h1 {
+      color: #2a9d8f;
+      margin-bottom: 0.5rem;
+    }
+    .chart-container {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    canvas {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgb(0 0 0 / 0.15);
+      max-width: 480px;
+      max-height: 360px;
+      width: 100%;
+      height: auto;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gráficos do Papel Semente</h1>
+  <div class="chart-container">
+    <div>
+      <h2>Número de Usuários vs Preço (R$ por folha)</h2>
+      <canvas id="precoChart"></canvas>
+    </div>
+    <div>
+      <h2>Percentual da População vs Plantas Produzidas (bilhões)</h2>
+      <canvas id="plantasChart"></canvas>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Dados para gráfico de preço x número de usuários
+    const precoData = {
+      labels: ['0 milhões', '10 milhões', '20 milhões', '30 milhões', '40 milhões'],
+      datasets: [{
+        label: 'Preço por folha (R$)',
+        data: [4.00, 3.5, 2.5, 1.5, 0.5],
+        backgroundColor: '#2a9d8f',
+        borderRadius: 5,
+        barPercentage: 0.6,
+      }]
+    };
+
+    const precoConfig = {
+      type: 'bar',
+      data: precoData,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 4.5,
+            ticks: {
+              stepSize: 0.5,
+              callback: function(value) {
+                return 'R$ ' + value.toFixed(2);
+              }
+            },
+            title: {
+              display: true,
+              text: 'Preço por folha (R$)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Número de Usuários'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return 'Preço: R$ ' + context.parsed.y.toFixed(2);
+              }
+            }
+          }
+        }
+      }
+    };
+
+    // Dados para gráfico percentual da população vs plantas produzidas
+    const plantasData = {
+      labels: ['10%', '20%', '30%', '50%'],
+      datasets: [{
+        label: 'Plantas Produzidas (bilhões)',
+        data: [15, 30, 45, 60],
+        backgroundColor: '#e76f51',
+        borderRadius: 5,
+        barPercentage: 0.6,
+      }]
+    };
+
+    const plantasConfig = {
+      type: 'bar',
+      data: plantasData,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 70,
+            ticks: {
+              stepSize: 10,
+              callback: function(value) {
+                return value + ' bi';
+              }
+            },
+            title: {
+              display: true,
+              text: 'Plantas Produzidas (bilhões)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Percentual da População Brasileira'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    };
+
+    // Renderizando os gráficos
+    const precoChart = new Chart(
+      document.getElementById('precoChart'),
+      precoConfig
+    );
+    
+    const plantasChart = new Chart(
+      document.getElementById('plantasChart'),
+      plantasConfig
+    );
+  </script>
+</body>
+</html>
